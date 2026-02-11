@@ -29,3 +29,9 @@ const Tile &Tilemap::operator()(int x, int y) const {
     return tiles.at(y*width + x);
 }
 
+Tile &Tilemap::operator()(int x, int y) {
+    check_bounds(x,y);
+    return tiles.at(y*width+x );
+}
+
+

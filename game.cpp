@@ -7,7 +7,7 @@
 #include "game.h"
 
 Game::Game(std::string title, int width, int height) :
-graphics{title, width, height},world{32,11}, dt{1.0/60.0}, lag{0.0},
+graphics{title, width, height},world{32,11},camera{graphics, 64}, dt{1.0/60.0}, lag{0.0},
 performance_frequency(SDL_GetPerformanceFrequency()),
 prev_counter(SDL_GetPerformanceCounter()){
     //load the first level
@@ -22,6 +22,7 @@ prev_counter(SDL_GetPerformanceCounter()){
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
+    camera.set_location(player->position);
 }
 
 void Game::input() {
@@ -34,6 +35,10 @@ void Game::update() {
     prev_counter = now;
     while (lag >= dt) {
         world.update(dt);
+        // put the camera slightly ahead of the player
+        float L = length(player->velocity);
+        Vec displacement = 8.0f * player->velocity / (1.0f + L);
+        camera.update(player->position, dt);
         lag -= dt;
     }
 }
@@ -43,11 +48,11 @@ void Game::render() {
     graphics.clear();
 
     //draw the world
-    for (auto &platform : world.get_platforms()) {
-        graphics.draw(platform, {0,255,0,255});
-    }
-    auto [player_sprite, color] = player->get_sprite();
-    graphics.draw(player_sprite, color);
+    camera.render(world.tilemap);
+
+    //draw player
+    auto [player_position, color] = player->get_sprite();
+    camera.render(player_position, color);
 
     graphics.update();
 }

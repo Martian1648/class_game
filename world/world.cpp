@@ -28,13 +28,16 @@ void World::add_platform(float x, float y, float width, float height) {
 
 
 
-bool World::has_collisions(const SDL_FRect &box) const {
-    return std::any_of(std::begin(platforms), std::end(platforms),
-        [&](const SDL_FRect& platform){return SDL_HasRectIntersectionFloat(&platform, &box);});
+bool World::collides(const Vec<float> &position) const {
+    int x = std::floor(position.x);
+    int y = std::floor(position.y);
+
+    return tilemap(x,y) == Tile::Platform;
 }
 
+
 Player *World::create_player() {
-    player = std::make_unique<Player>(Vec<float>{600,400}, Vec<float>{64,64});
+    player = std::make_unique<Player>(Vec<float>{10,5}, Vec<float>{64,64});
     return player.get();
 }
 
@@ -49,11 +52,14 @@ void World::update(float dt) {
     velocity += 0.5f * acceleration * dt;
     velocity.x *= damping;
 
+    velocity.x = std::clamp(velocity.x, -terminal_velocity, terminal_velocity);
+    velocity.y = std::clamp(velocity.y, -terminal_velocity, terminal_velocity);
+
     //xheck for x
 
-    SDL_FRect future{position.x, player->position.y, player->size.x, player->size.y};
+    Vec<float> future{position.x, player->position.y};
     //check for collisions
-    if (has_collisions(future)) {
+    if (collides(future)) {
         player->velocity.x = 0;
         player->acceleration.x = 0;
     }
@@ -66,7 +72,7 @@ void World::update(float dt) {
     future.x = player->position.x;
 
     future.y = position.y;
-    if (has_collisions(future)) {
+    if (collides(future)) {
         player->velocity.y = 0;
         player->acceleration.y = 0;
     }

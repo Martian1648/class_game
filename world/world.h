@@ -8,6 +8,7 @@
 #include <memory>
 #include <SDL3/SDL.h>
 #include <vector>
+#include <vec.h>
 
 #include "tilemap.h"
 
@@ -18,7 +19,7 @@ public:
     World(int width, int height);
 
     void add_platform(float x, float y, float width, float height);
-    bool has_collisions(const SDL_FRect& box) const;
+    bool collides(const Vec<float>&position) const;
     Player* create_player();
     void update(float dt);
 

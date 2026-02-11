@@ -4,6 +4,7 @@
 βούλημα: game
 */
 #pragma once
+#include "camera.h"
 #include "player.h"
 #include "world.h"
 
@@ -18,6 +19,7 @@ private:
     Player* player;
     World world;
     Graphics graphics;
+    Camera camera;
 
     //timing
     float dt;
