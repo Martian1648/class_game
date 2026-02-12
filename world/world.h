@@ -22,7 +22,7 @@ public:
     bool collides(const Vec<float>&position) const;
     GameObject* create_player();
     void update(float dt);
-    void move_to(Vec<float>& position, const Vec<float>& size, Vec<float>& velocity);
+    void move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velocity);
 
     Tilemap tilemap;
 private:

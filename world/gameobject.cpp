@@ -8,7 +8,7 @@
 #include "physics.h"
 
 
-GameObject::GameObject(const Vec<float> &position, const Vec<float> &size, World& world)
+GameObject::GameObject(const Vec<float> &position, const Vec<int> &size, World& world)
     :size{size}{
     physics.position = position;
 }

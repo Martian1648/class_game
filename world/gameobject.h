@@ -10,7 +10,7 @@ class World;
 
 class GameObject {
 public:
-    GameObject(const Vec<float>& position, const Vec<float> &size, World& world);
+    GameObject(const Vec<float>& position, const Vec<int> &size, World& world);
     ~GameObject();
     void input(World& world);
     void update(World& world, double dt);
@@ -18,7 +18,7 @@ public:
 
 
     Physics physics;
-    Vec<float> size;
+    Vec<int> size;
 
 
 

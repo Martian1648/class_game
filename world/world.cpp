@@ -37,40 +37,62 @@ bool World::collides(const Vec<float> &position) const {
 
 
 GameObject *World::create_player() {
-    player = std::make_unique<GameObject>(Vec<float>{10,1}, Vec<float>{64,64},*this);
+    player = std::make_unique<GameObject>(Vec<float>{10,1}, Vec<int>{1, 1},*this);
     return player.get();
 }
 
-void World::move_to(Vec<float> &position, const Vec<float> &size, Vec<float> &velocity) {
-    int x = std::floor(position.x);
-    int u = x+tilemap.width;
-    int y = std::floor(position.y);
-    int v = y + tilemap.height;
-    bool bottom, top, left, right;
-    bottom = top = left = right = false;
-    //bottom
-    if (tilemap(x, std::max(v,tilemap.height)) == Tile::Platform) {
-        position.y = std::ceil(y);
-        velocity.y = 0;
-        bottom = true;
+void World::move_to(Vec<float> &position, const Vec<int> &size, Vec<float> &velocity) {
+    int left_tile = std::floor(position.x);
+    int right_tile = std::floor(position.x + size.x);
+    int top_tile = std::floor(position.y);
+    int bottom_tile = std::floor(position.y + size.y);
+
+    if (velocity.y > 0) {
+        for (int x = left_tile; x <= right_tile; ++x) {
+            if (x >= 0 && x < tilemap.width && bottom_tile >= 0 && bottom_tile < tilemap.height) {
+                if (tilemap(x, bottom_tile) == Tile::Platform) {
+                    position.y = std::floor(position.y + size.y) - ( size.y) ;
+
+                    velocity.y = 0;
+                    break;
+                }
+            }
+        }
     }
-    //top
-    if (tilemap(x,std::min(y,0)) == Tile::Platform) {
-        position.y = std::ceil(y);
-        velocity.y = 0;
-        top = true;
+    else if (velocity.y < 0) {
+        for (int x = left_tile; x <= right_tile; ++x) {
+            if (x >= 0 && x < tilemap.width && top_tile >= 0 && top_tile < tilemap.height) {
+                if (tilemap(x, top_tile) == Tile::Platform) {
+                    position.y = std::ceil(position.y);
+                    velocity.y = 0;
+                    break;
+                }
+            }
+        }
     }
-    //left
-    if (tilemap(std::min(v,0), y) == Tile::Platform) {
-        position.x = std::ceil(x);
-        velocity.x = 0;
-        left = true;
+    top_tile = std::floor(position.y);
+    bottom_tile = std::floor(position.y + size.y);
+    if (velocity.x > 0) {
+        for (int y = top_tile; y <= bottom_tile; ++y) {
+            if (right_tile >= 0 && right_tile < tilemap.width && y >= 0 && y < tilemap.height) {
+                if (tilemap(right_tile, y) == Tile::Platform) {
+                    position.x = std::floor(position.x + size.x) - size.x;
+                    velocity.x = 0;
+                    break;
+                }
+            }
+        }
     }
-    //right
-    if (tilemap(std::max(tilemap.width,x), y) == Tile::Platform) {
-        position.x = std::ceil(x);
-        velocity.x = 0;
-        right = true;
+    else if (velocity.x < 0) {
+        for (int y = top_tile; y <= bottom_tile; ++y) {
+            if (left_tile >= 0 && left_tile < tilemap.width && y >= 0 && y < tilemap.height) {
+                if (tilemap(left_tile, y) == Tile::Platform) {
+                    position.x = std::ceil(position.x);
+                    velocity.x = 0;
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -80,6 +102,7 @@ void World::update(float dt) {
     auto position = player->physics.position;
     auto velocity = player->physics.velocity;
     auto acceleration = player->physics.acceleration;
+    acceleration.y = player->physics.gravity;
 
     velocity += 0.5f * acceleration * dt;
     position += velocity * dt;
@@ -93,7 +116,7 @@ void World::update(float dt) {
 
     Vec<float> future{position.x, player->physics.position.y};
     Vec<float> future_vel{velocity.x, 0};
-    move_to(future, player->size, future_vel);
+    move_to(future, {1,1}, future_vel);
     //check for collisions
     /*if (collides(future)) {
         player->physics.velocity.x = 0;
@@ -105,11 +128,13 @@ void World::update(float dt) {
         player->physics.acceleration.x = acceleration.x;
     }*/
 
-
+    player->physics.position.x = future.x;
+    player->physics.velocity.x = future_vel.x;
 
     future.y = position.y;
     future_vel.y = velocity.y;
-    move_to(future, player->size, future_vel);
+    future_vel.x = 0;
+    move_to(future, {1,1}, future_vel);
     /*if (collides(future)) {
         player->physics.velocity.y = 0;
         player->physics.acceleration.y = 0;
@@ -119,6 +144,7 @@ void World::update(float dt) {
         player->physics.position.y = position.y;
         player->physics.acceleration.y = player->physics.gravity;
     }*/
-
+    player->physics.position.y = future.y;
+    player->physics.velocity.y = future_vel.y;
 }
 
