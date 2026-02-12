@@ -5,7 +5,7 @@
 */
 #pragma once
 #include "camera.h"
-#include "player.h"
+#include "world/gameobject.h"
 #include "world.h"
 
 
@@ -16,7 +16,7 @@ public:
     void update();
     void render();
 private:
-    Player* player;
+    GameObject* player;
     World world;
     Graphics graphics;
     Camera camera;

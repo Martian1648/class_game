@@ -26,7 +26,8 @@ prev_counter(SDL_GetPerformanceCounter()){
 }
 
 void Game::input() {
-    player->handle_input();
+    player->input();
+    camera.handle_input();
 }
 
 void Game::update() {

@@ -6,11 +6,12 @@
 
 class World;
 
-class Player {
+class GameObject {
 public:
-    Player(const Vec<float>& position, const Vec<float> &size);
-    void handle_input();
-    void update();
+    GameObject(const Vec<float>& position, const Vec<float> &size, World& world);
+    ~GameObject();
+    void input(World& world);
+    void update(World& world, double dt);
     std::pair<Vec<float>, Color> get_sprite() const;
 
 

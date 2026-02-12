@@ -4,11 +4,11 @@
 βούλημα: game
 */
 
-#include "player.h"
+#include "gameobject.h"
 #include "physics.h"
 
 
-Player::Player(const Vec<float> &position, const Vec<float> &size)
+GameObject::GameObject(const Vec<float> &position, const Vec<float> &size, World& world)
     :position{position}, size{size}, velocity{0,0}{
     acceleration.y = gravity;
 }
@@ -16,7 +16,7 @@ Player::Player(const Vec<float> &position, const Vec<float> &size)
 
 
 
-void Player::handle_input() {
+void GameObject::input(World& world) {
     const bool *key_states = SDL_GetKeyboardState(NULL);
     acceleration.x = 0;
     // if (key_states[SDL_SCANCODE_W]) {
@@ -38,12 +38,12 @@ void Player::handle_input() {
     }
 }
 
-void Player::update() {
+void GameObject::update(World& world, double dt) {
 
 }
 
 
-std::pair<Vec<float>, Color> Player::get_sprite() const {
+std::pair<Vec<float>, Color> GameObject::get_sprite() const {
     return {position, {255,0,2,100}};
 }
 

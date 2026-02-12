@@ -9,7 +9,7 @@
 #include <algorithm>
 
 #include "physics.h"
-#include "player.h"
+#include "gameobject.h"
 
 World::World(int width, int height):
 tilemap{width,height}{
@@ -36,8 +36,8 @@ bool World::collides(const Vec<float> &position) const {
 }
 
 
-Player *World::create_player() {
-    player = std::make_unique<Player>(Vec<float>{10,5}, Vec<float>{64,64});
+GameObject *World::create_player() {
+    player = std::make_unique<GameObject>(Vec<float>{10,5}, Vec<float>{64,64});
     return player.get();
 }
 

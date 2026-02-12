@@ -21,14 +21,20 @@ title{title}, width{window_width}, height{window_height}{
 
 
 void Graphics::clear() {
-    SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+    SDL_SetRenderDrawColor(renderer, 255,0,0,255);
     SDL_RenderClear(renderer);
 }
 
-void Graphics::draw(const SDL_FRect &rect, const Color &color) {
+void Graphics::draw(const SDL_FRect &rect, const Color &color, bool filled) {
     auto [red, green, blue, alpha] = color;
     SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
-    SDL_RenderFillRect(renderer, &rect);
+    if (filled) {
+        SDL_RenderFillRect(renderer, &rect);
+    }
+    else {
+        SDL_RenderRect(renderer, &rect);
+    }
+    //SDL_RenderFillRect(renderer, &rect);
 }
 
 void Graphics::update() {

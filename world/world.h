@@ -12,7 +12,7 @@
 
 #include "tilemap.h"
 
-class Player;
+class GameObject;
 
 class World {
 public:
@@ -20,11 +20,11 @@ public:
 
     void add_platform(float x, float y, float width, float height);
     bool collides(const Vec<float>&position) const;
-    Player* create_player();
+    GameObject* create_player();
     void update(float dt);
 
     Tilemap tilemap;
 private:
 
-    std::unique_ptr<Player> player;
+    std::unique_ptr<GameObject> player;
 };
