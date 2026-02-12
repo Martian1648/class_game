@@ -6,6 +6,8 @@
 
 #pragma once
 #include <vec.h>
+
+#include "physics.h"
 #include "tilemap.h"
 #include "toggle.h"
 
@@ -27,10 +29,10 @@ public:
 private:
     Graphics &graphics;
     float tilesize;
-    Vec<float> location;
+    Physics physics;
 
     void calculate_visible_tiles();
     Vec<int> visible_min, visible_max;
-    Vec<float> goal, velocity, acceleration;
+    Vec<float> goal;
     Toggle grid_toggle;
 };

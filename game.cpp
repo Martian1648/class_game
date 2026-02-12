@@ -22,11 +22,11 @@ prev_counter(SDL_GetPerformanceCounter()){
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
-    camera.set_location(player->position);
+    camera.set_location(player->physics.position);
 }
 
 void Game::input() {
-    player->input();
+    player->input(world);
     camera.handle_input();
 }
 
@@ -37,9 +37,9 @@ void Game::update() {
     while (lag >= dt) {
         world.update(dt);
         // put the camera slightly ahead of the player
-        float L = length(player->velocity);
-        Vec displacement = 8.0f * player->velocity / (1.0f + L);
-        camera.update(player->position, dt);
+        float L = length(player->physics.velocity);
+        Vec displacement = 8.0f * player->physics.velocity / (1.0f + L);
+        camera.update(player->physics.position, dt);
         lag -= dt;
     }
 }

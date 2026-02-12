@@ -1,5 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
+
+#include "physics.h"
 #include "../graphics/graphics.h"
 #include "utility"
 #include "../utility/vec.h"
@@ -15,10 +17,9 @@ public:
     std::pair<Vec<float>, Color> get_sprite() const;
 
 
-    Vec<float> position;
+    Physics physics;
     Vec<float> size;
-    Vec<float> velocity;
-    Vec<float> acceleration;
+
 
 
 };

@@ -9,16 +9,19 @@
 
 
 GameObject::GameObject(const Vec<float> &position, const Vec<float> &size, World& world)
-    :position{position}, size{size}, velocity{0,0}{
-    acceleration.y = gravity;
+    :size{size}{
+    physics.position = position;
 }
 
+GameObject::~GameObject() {
+
+}
 
 
 
 void GameObject::input(World& world) {
     const bool *key_states = SDL_GetKeyboardState(NULL);
-    acceleration.x = 0;
+    physics.acceleration.x = 0;
     // if (key_states[SDL_SCANCODE_W]) {
     //     velocity.y += -16;
     // }
@@ -27,14 +30,14 @@ void GameObject::input(World& world) {
     // }
     if (key_states[SDL_SCANCODE_A]) {
         //velocity.x += -16;
-        acceleration.x += -walk_acceleration;
+        physics.acceleration.x += -physics.walk_acceleration;
     }
     if (key_states[SDL_SCANCODE_D]) {
         //velocity.x += 16;
-        acceleration.x += walk_acceleration;
+        physics.acceleration.x += physics.walk_acceleration;
     }
     if (key_states[SDL_SCANCODE_SPACE]) {
-        velocity.y = jump_velocity;
+        physics.velocity.y = physics.jump_velocity;
     }
 }
 
@@ -44,7 +47,7 @@ void GameObject::update(World& world, double dt) {
 
 
 std::pair<Vec<float>, Color> GameObject::get_sprite() const {
-    return {position, {255,0,2,100}};
+    return {physics.position, {255,0,2,100}};
 }
 
 
