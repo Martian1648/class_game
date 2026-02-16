@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 
+#include "fsm.h"
 #include "physics.h"
 #include "../graphics/graphics.h"
 #include "utility"
@@ -10,7 +11,8 @@ class World;
 
 class GameObject {
 public:
-    GameObject(const Vec<float>& position, const Vec<int> &size, World& world);
+    GameObject(const Vec<float>& position, const Vec<int> &size, World& world,
+        FSM* fsm, Color color);
     ~GameObject();
     void input(World& world);
     void update(World& world, double dt);
@@ -19,7 +21,8 @@ public:
 
     Physics physics;
     Vec<int> size;
-
+    FSM* fsm;
+    Color color;
 
 
 };

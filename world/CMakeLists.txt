@@ -12,6 +12,8 @@ world.cpp world.h
         action.h
         fsm.cpp
         fsm.h
+        states.cpp
+        states.h
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -10,8 +10,9 @@
 #include "physics.h"
 
 
-GameObject::GameObject(const Vec<float> &position, const Vec<int> &size, World& world)
-    :size{size}{
+GameObject::GameObject(const Vec<float> &position, const Vec<int> &size, World& world,
+    FSM* fsm, Color color)
+    :size{size},fsm{fsm}, color{color}{
     physics.position = position;
 }
 
@@ -42,19 +43,25 @@ if (key_states[SDL_SCANCODE_D]) {
 }
 */
     if (key_states[SDL_SCANCODE_SPACE]) {
-        physics.velocity.y = physics.jump_velocity;
+        //physics.velocity.y = physics.jump_velocity;
+        action_type = ActionType::Jump;
+    }
+    Action* action = fsm->current_state->input(world, *this, action_type);
+    if (action != nullptr) {
+        action->perform(world, *this);
+        delete action;
     }
 
 
 }
 
 void GameObject::update(World& world, double dt) {
-
+    fsm->current_state->update(world, *this, dt);
 }
 
 
 std::pair<Vec<float>, Color> GameObject::get_sprite() const {
-    return {physics.position, {255,0,2,100}};
+    return {physics.position, color};
 }
 
 

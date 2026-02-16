@@ -10,6 +10,7 @@
 
 #include "physics.h"
 #include "gameobject.h"
+#include "states.h"
 
 World::World(int width, int height):
 tilemap{width,height}{
@@ -39,7 +40,17 @@ bool World::collides(const Vec<float> &position) const {
 
 
 GameObject *World::create_player() {
-    player = std::make_unique<GameObject>(Vec<float>{10,1}, Vec<int>{1, 1},*this);
+    Transitions transitions = {
+        {{StateType::Standing, Transition::Jump}, StateType::InAir},
+        {{StateType::InAir, Transition::Stop}, StateType::Standing}
+    };
+    States states = {
+        {StateType::Standing, new Standing()},
+        {StateType::InAir, new InAir()}
+    };
+    FSM* fsm = new FSM{transitions, states, StateType::Standing};
+    player = std::make_unique<GameObject>(Vec<float>{10,1}, Vec<int>{1, 1},*this, fsm,
+        Color{255,0,0,255});
     return player.get();
 }
 
