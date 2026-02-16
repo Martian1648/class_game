@@ -5,6 +5,8 @@
 */
 
 #include "gameobject.h"
+
+#include "action.h"
 #include "physics.h"
 
 
@@ -20,25 +22,30 @@ GameObject::~GameObject() {
 
 
 void GameObject::input(World& world) {
-    const bool *key_states = SDL_GetKeyboardState(NULL);
-    physics.acceleration.x = 0;
-    // if (key_states[SDL_SCANCODE_W]) {
-    //     velocity.y += -16;
-    // }
-    // if (key_states[SDL_SCANCODE_S]) {
-    //     velocity.y += 16;
-    // }
-    if (key_states[SDL_SCANCODE_A]) {
-        //velocity.x += -16;
-        physics.acceleration.x += -physics.walk_acceleration;
-    }
-    if (key_states[SDL_SCANCODE_D]) {
-        //velocity.x += 16;
-        physics.acceleration.x += physics.walk_acceleration;
-    }
+const bool *key_states = SDL_GetKeyboardState(NULL);
+    ActionType action_type;
+/*physics.acceleration.x = 0;
+physics.acceleration.y = physics.gravity;
+// if (key_states[SDL_SCANCODE_W]) {
+//     velocity.y += -16;
+// }
+// if (key_states[SDL_SCANCODE_S]) {
+//     velocity.y += 16;
+// }
+if (key_states[SDL_SCANCODE_A]) {
+    //velocity.x += -16;
+    physics.acceleration.x += -physics.walk_acceleration;
+}
+if (key_states[SDL_SCANCODE_D]) {
+    //velocity.x += 16;
+    physics.acceleration.x += physics.walk_acceleration;
+}
+*/
     if (key_states[SDL_SCANCODE_SPACE]) {
         physics.velocity.y = physics.jump_velocity;
     }
+
+
 }
 
 void GameObject::update(World& world, double dt) {

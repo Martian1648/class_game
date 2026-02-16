@@ -8,7 +8,11 @@ world.cpp world.h
         camera.h
         gameobject.cpp
         gameobject.h
-    )
+        action.cpp
+        action.h
+        fsm.cpp
+        fsm.h
+)
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(world PUBLIC SDL3::SDL3 utility)
