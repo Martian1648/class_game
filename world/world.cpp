@@ -42,72 +42,23 @@ bool World::collides(const Vec<float> &position) const {
 GameObject *World::create_player() {
     Transitions transitions = {
         {{StateType::Standing, Transition::Jump}, StateType::InAir},
-        {{StateType::InAir, Transition::Stop}, StateType::Standing}
+        {{StateType::InAir, Transition::Stop}, StateType::Standing},
+        {{StateType::Standing, Transition::Move}, StateType::Running},
+        {{StateType::Running, Transition::Stop}, StateType::Standing},
+        {{StateType::Running, Transition::Jump}, StateType::InAir},
+
     };
     States states = {
         {StateType::Standing, new Standing()},
-        {StateType::InAir, new InAir()}
+        {StateType::InAir, new InAir()},
+        {StateType::Running, new Running()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
-    player = std::make_unique<GameObject>(Vec<float>{10,1}, Vec<int>{1, 1},*this, fsm,
+    player = std::make_unique<GameObject>(Vec<float>{10,3}, Vec<int>{1, 1},*this, fsm,
         Color{255,0,0,255});
     return player.get();
 }
 
-/*void World::move_to(Vec<float> &position, const Vec<int> &size, Vec<float> &velocity) {
-    int left_tile = std::floor(position.x);
-    int right_tile = std::floor(position.x + size.x);
-    int top_tile = std::floor(position.y);
-    int bottom_tile = std::floor(position.y + size.y);
-
-    if (velocity.y > 0) {
-        for (int x = left_tile; x <= right_tile; ++x) {
-            if (x >= 0 && x < tilemap.width && bottom_tile >= 0 && bottom_tile < tilemap.height) {
-                if (tilemap(x, bottom_tile) == Tile::Platform) {
-                    position.y = std::floor(position.y + size.y) - ( size.y) ;
-
-                    velocity.y = 0;
-                    break;
-                }
-            }
-        }
-    }
-    else if (velocity.y < 0) {
-        for (int x = left_tile; x <= right_tile; ++x) {
-            if (x >= 0 && x < tilemap.width && top_tile >= 0 && top_tile < tilemap.height) {
-                if (tilemap(x, top_tile) == Tile::Platform) {
-                    position.y = std::ceil(position.y);
-                    velocity.y = 0;
-                    break;
-                }
-            }
-        }
-    }
-    top_tile = std::floor(position.y);
-    bottom_tile = std::floor(position.y + size.y);
-    if (velocity.x > 0) {
-        for (int y = top_tile; y <= bottom_tile; ++y) {
-            if (right_tile >= 0 && right_tile < tilemap.width && y >= 0 && y < tilemap.height) {
-                if (tilemap(right_tile, y) == Tile::Platform) {
-                    position.x = std::floor(position.x + size.x) - size.x;
-                    velocity.x = 0;
-                    break;
-                }
-            }
-        }
-    }
-    else if (velocity.x < 0) {
-        for (int y = top_tile; y <= bottom_tile; ++y) {
-            if (left_tile >= 0 && left_tile < tilemap.width && y >= 0 && y < tilemap.height) {
-                if (tilemap(left_tile, y) == Tile::Platform) {
-                    position.x = std::ceil(position.x);
-                    velocity.x = 0;
-                    break;
-                }
-            }
-        }
-    }
-}*/
 
 
 void World::update(float dt) {
