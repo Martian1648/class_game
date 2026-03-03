@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 
+#include "animatedsprite.h"
 #include "fsm.h"
 #include "physics.h"
 #include "../graphics/graphics.h"
@@ -8,6 +9,8 @@
 #include "../utility/vec.h"
 class Input;
 class World;
+
+using Sprites = std::map<std::string, AnimatedSprite>;
 
 class GameObject {
 public:
@@ -23,6 +26,7 @@ public:
     FSM* fsm;
     Input* input;
     Color color;
-
+    Sprites sprites;
     Sprite sprite;
+    std::string sprite_name;
 };

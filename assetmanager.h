@@ -9,7 +9,7 @@
 #include "sprite.h"
 #include "json.hpp"
 #include "graphics.h"
-
+class GameObject;
 //need to map vec to JSON
 template <typename T>
 void to_json(const nlohmann::json& j, const Vec<T>& v) {
@@ -22,8 +22,10 @@ void from_json(const nlohmann::json& j, Vec<T>& v) {
     v.y = j.at(1).get<T>();
 }
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, filename, location, size, scale)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sprite, filename, location, size, scale, dt_per_frame, number_of_frames)
 
 namespace AssetManager {
-    Sprite get_game_object_sprite(const std::string& name, Graphics& graphics);
+
+
+    void get_game_object_details(const std::string& name, Graphics& graphics, GameObject& obj);
 }
