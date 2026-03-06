@@ -24,6 +24,8 @@ prev_counter(SDL_GetPerformanceCounter()){
     world.add_platform(13,4,6,1);
 
     player = world.create_player();
+    AssetManager::get_game_object_details("player", graphics, *player);
+    player->fsm->current_state->on_enter(world, *player);
     camera.set_location(player->physics.position);
 }
 

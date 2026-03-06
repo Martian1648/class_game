@@ -14,13 +14,13 @@ using Sprites = std::map<std::string, AnimatedSprite>;
 
 class GameObject {
 public:
-    GameObject(const Vec<float>& position, const Vec<int> &size, World& world,
+    GameObject(const Vec<int> &size, World& world,
         FSM* fsm, Color color, Input* input);
     ~GameObject();
     void update(World& world, double dt);
     std::pair<Vec<float>, Color> get_sprite() const;
 
-
+    void set_sprite(const std::string& next_sprite);
     Physics physics;
     Vec<int> size;
     FSM* fsm;

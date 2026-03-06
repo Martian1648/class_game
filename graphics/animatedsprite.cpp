@@ -36,7 +36,7 @@ void AnimatedSprite::reset() {
 }
 
 Sprite AnimatedSprite::get_sprite() {
-    return sprites[current_frame];
+    return sprites.at(current_frame);
 }
 int AnimatedSprite::number_of_frames() {
     return sprites.size();
