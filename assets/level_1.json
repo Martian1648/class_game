@@ -1,0 +1,34 @@
+{
+    "height": 15,
+    "player_spawn_location": [
+        6,
+        6
+    ],
+    "tile_filenames": [
+        "nature-tiles.json"
+    ],
+    "tiles": [
+        {
+            "pos": [
+                6,
+                0
+            ],
+            "tile": "nature-tiles.json:dirt"
+        },
+        {
+            "pos": [
+                7,
+                0
+            ],
+            "tile": "nature-tiles.json:dirt"
+        },
+        {
+            "pos": [
+                7,
+                1
+            ],
+            "tile": "nature-tiles.json:doorway"
+        }
+    ],
+    "width": 31
+}
