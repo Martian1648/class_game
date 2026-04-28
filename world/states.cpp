@@ -6,6 +6,7 @@
 
 #include "states.h"
 #include "action.h"
+#include "randoms.h"
 #include "world.h"
 
 
@@ -61,18 +62,21 @@ Action *Running::input(World &world, GameObject &obj, ActionType action_type) {
      if (action_type == ActionType::None) {
          obj.fsm->transition(Transition::Stop, world, obj);
      }
-    else if (action_type == ActionType::Jump) {
+     if (action_type == ActionType::Jump) {
         obj.fsm->transition(Transition::Jump, world, obj);
         return new Jump();
     }
-    else if (action_type == ActionType::SprintLeft) {
+     if (action_type == ActionType::SprintLeft) {
         obj.fsm->transition(Transition::Plant, world, obj);
         return new SprintLeft();
     }
-    else if (action_type == ActionType::SprintRight) {
+     if (action_type == ActionType::SprintRight) {
         obj.fsm->transition(Transition::Plant, world, obj);
         return new SprintRight();
     }
+    if (action_type == ActionType::AttackAll) {
+        obj.fsm->transition(Transition::AttackOmnes, world, obj);
+        }
     return nullptr;
 }
 
@@ -90,6 +94,40 @@ void Sprinting::update(World &world, GameObject &obj, double dt) {
     }
 }
 
+void AttackAllEnemies::on_enter(World &world, GameObject &obj) {
+    obj.color = {255,100,0,255};
+    for (auto& enemy: world.game_objects) {
+        if (enemy == world.player) continue;
+        enemy->take_damage(obj.damage);
+    }
+    elapsed = 0;
+}
+
+void AttackAllEnemies::update(World &world, GameObject &obj, double dt) {
+    elapsed -= dt;
+
+    if (elapsed <= 0) {
+        obj.fsm->transition(Transition::Chill, world, obj);
+    }
+}
+
+void Patroling::on_enter(World &world, GameObject &obj) {
+    // set cooldown to a random amount of time
+    elapsed = 0;
+    cooldown = randint(3,10);
+    Running::on_enter(world, obj);
+}
+
+Action *Patroling::input(World &world, GameObject &obj, ActionType action_type) {
+    if (elapsed >= cooldown) {
+        return Running::input(world, obj, ActionType::None);
+    }
+    return Running::input(world, obj, action_type);
+}
+
+void Patroling::update(World &, GameObject &, double dt) {
+    elapsed+= dt;
+}
 
 
 

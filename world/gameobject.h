@@ -18,13 +18,14 @@ public:
     GameObject(std::string name,
         FSM* fsm, Color color, Input* input);
     ~GameObject();
-    void update(World& world, double dt);
+    virtual void update(World& world, double dt);
     std::pair<Vec<float>, Color> get_sprite() const;
     std::string obj_name;
     void set_sprite(const std::string& next_sprite);
     AABB get_bounding_box();
-
+    void take_damage(int attack_damage);
     Physics physics;
+    bool is_alive = true;
     Vec<int> size;
     FSM* fsm;
     Input* input;
@@ -35,4 +36,6 @@ public:
     int health;
     int max_health;
     int damage;
+    bool flash_sprite() const;
+    double i_frames_remaining {0.0};
 };

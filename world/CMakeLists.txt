@@ -25,6 +25,10 @@ world.cpp world.h
         events.h
         quadtree.cpp
         quadtree.h
+        projectile.cpp
+        projectile.h
+        aiinput.cpp
+        aiinput.h
 )
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

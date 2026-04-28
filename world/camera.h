@@ -24,10 +24,10 @@ public:
     Vec<float> world_to_screen(const Vec<float>& world_position) const;
     void set_location(const Vec<float>& new_location);
     void handle_input();
-
+    void render_game_over();
     void render(const Vec<float>& position, const Color& color, bool filled=true) const;
     void render(const Tilemap& tilemap) const;
-    void render(const Vec<float>& position, const Sprite& sprite)const;
+    void render(const Vec<float>& position, const Sprite& sprite, bool flash = false)const;
     void render(const GameObject& obj) const;
 
 private:

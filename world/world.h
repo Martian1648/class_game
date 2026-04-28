@@ -10,6 +10,7 @@
 #include <vector>
 #include <vec.h>
 #include "level.h"
+#include "projectile.h"
 #include "tilemap.h"
 #include "quadtree.h"
 class Event;
@@ -26,7 +27,9 @@ public:
     void move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velocity);
     void load_level(const Level& level);
     void build_quadtree();
+    void update_object(GameObject* obj, float dt);
     bool end_level{false};
+    bool end_game{false};
     Tilemap tilemap;
     void touch_tiles(GameObject& obj);
     Audio* audio;
@@ -34,4 +37,7 @@ public:
     Quadtree quadtree;
     std::map<std::string, Event*> events;
     std::vector<GameObject*>game_objects;
+    std::vector<Projectile*> projectiles;
+    //items
+    std::map<std::string,std::function<GameObject*()>> available_items;
 };

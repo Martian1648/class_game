@@ -51,5 +51,12 @@
             "tile": "nature-tiles.json:doorway"
         }
     ],
-    "width": 31
+    "width": 31,
+    "sounds" : [
+        {
+            "name": "background",
+            "filename" : "action-music.mp3",
+            "loop_forever": true
+        }
+    ]
 }
